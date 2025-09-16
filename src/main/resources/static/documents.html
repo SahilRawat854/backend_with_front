@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Verification - SpinGo</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/dark-theme.css" rel="stylesheet">
+    
+    <style>
+        .documents-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 0;
+        }
+        
+        .documents-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .documents-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .documents-body {
+            padding: 40px;
+        }
+        
+        .document-card {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .document-card.uploaded {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.05);
+        }
+        
+        .document-card.verified {
+            border-color: #007bff;
+            background: rgba(0, 123, 255, 0.05);
+        }
+        
+        .document-card.rejected {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.05);
+        }
+        
+        .upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .upload-area:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        
+        .upload-area.uploaded .upload-icon {
+            color: #28a745;
+        }
+        
+        .file-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .file-icon {
+            font-size: 2rem;
+            color: #667eea;
+        }
+        
+        .file-details h6 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .file-details small {
+            color: #6c757d;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-verified {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .progress-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+        }
+        
+        .requirement-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .requirement-item i {
+            color: #28a745;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+        }
+        
+        .verification-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="documents-container">
+        <div class="documents-card">
+            <!-- Documents Header -->
+            <div class="documents-header">
+                <h2><i class="fas fa-file-upload me-2"></i>Document Verification</h2>
+                <p class="mb-0">Upload your documents to complete your profile and start renting bikes</p>
+            </div>
+            
+            <div class="documents-body">
+                <!-- Progress Section -->
+                <div class="progress-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Verification Progress</h5>
+                        <span class="badge bg-primary">2 of 4 documents uploaded</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 50%"></div>
+                    </div>
+                    <small class="text-muted mt-2 d-block">Complete all document uploads to start renting bikes</small>
+                </div>
+                
+                <!-- Driving License -->
+                <div class="document-card" id="licenseCard">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5><i class="fas fa-id-card me-2"></i>Driving License</h5>
+                            <p class="text-muted mb-3">Upload a clear photo of your valid driving license (both sides)</p>
+                            
+                            <div class="requirement-list">
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>License should be valid and not expired</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Both front and back sides required</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Image should be clear and readable</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>File size should be less than 5MB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="upload-area" id="licenseUpload">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h6>Upload Driving License</h6>
+                                <p class="text-muted mb-3">Drag & drop or click to browse</p>
+                                <button class="btn btn-outline-primary">Choose File</button>
+                                <input type="file" id="licenseFile" accept="image/*" style="display: none;">
+                            </div>
+                            
+                            <div class="verification-status" id="licenseStatus" style="display: none;">
+                                <span class="status-badge status-verified">Verified</span>
+                                <i class="fas fa-check-circle text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Aadhaar Card -->
+                <div class="document-card" id="aadhaarCard">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5><i class="fas fa-address-card me-2"></i>Aadhaar Card</h5>
+                            <p class="text-muted mb-3">Upload a clear photo of your Aadhaar card (both sides)</p>
+                            
+                            <div class="requirement-list">
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Aadhaar number should be clearly visible</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Both front and back sides required</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Image should be clear and readable</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>File size should be less than 5MB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="upload-area" id="aadhaarUpload">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h6>Upload Aadhaar Card</h6>
+                                <p class="text-muted mb-3">Drag & drop or click to browse</p>
+                                <button class="btn btn-outline-primary">Choose File</button>
+                                <input type="file" id="aadhaarFile" accept="image/*" style="display: none;">
+                            </div>
+                            
+                            <div class="verification-status" id="aadhaarStatus" style="display: none;">
+                                <span class="status-badge status-verified">Verified</span>
+                                <i class="fas fa-check-circle text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- PAN Card -->
+                <div class="document-card" id="panCard">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5><i class="fas fa-credit-card me-2"></i>PAN Card</h5>
+                            <p class="text-muted mb-3">Upload a clear photo of your PAN card</p>
+                            
+                            <div class="requirement-list">
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>PAN number should be clearly visible</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Name should match your profile</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Image should be clear and readable</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>File size should be less than 5MB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="upload-area" id="panUpload">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h6>Upload PAN Card</h6>
+                                <p class="text-muted mb-3">Drag & drop or click to browse</p>
+                                <button class="btn btn-outline-primary">Choose File</button>
+                                <input type="file" id="panFile" accept="image/*" style="display: none;">
+                            </div>
+                            
+                            <div class="verification-status" id="panStatus" style="display: none;">
+                                <span class="status-badge status-pending">Pending</span>
+                                <i class="fas fa-clock text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bank Statement -->
+                <div class="document-card" id="bankCard">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5><i class="fas fa-file-invoice me-2"></i>Bank Statement</h5>
+                            <p class="text-muted mb-3">Upload your latest bank statement (last 3 months)</p>
+                            
+                            <div class="requirement-list">
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Statement should be from last 3 months</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Account holder name should match your profile</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>Document should be in PDF format</span>
+                                </div>
+                                <div class="requirement-item">
+                                    <i class="fas fa-check"></i>
+                                    <span>File size should be less than 10MB</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="upload-area" id="bankUpload">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <h6>Upload Bank Statement</h6>
+                                <p class="text-muted mb-3">Drag & drop or click to browse</p>
+                                <button class="btn btn-outline-primary">Choose File</button>
+                                <input type="file" id="bankFile" accept=".pdf" style="display: none;">
+                            </div>
+                            
+                            <div class="verification-status" id="bankStatus" style="display: none;">
+                                <span class="status-badge status-pending">Pending</span>
+                                <i class="fas fa-clock text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary btn-lg me-3" id="submitDocuments">
+                        <i class="fas fa-paper-plane me-2"></i>Submit for Verification
+                    </button>
+                    <button class="btn btn-outline-secondary btn-lg" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </button>
+                </div>
+                
+                <!-- Security Notice -->
+                <div class="alert alert-info mt-4">
+                    <i class="fas fa-shield-alt me-2"></i>
+                    <strong>Your documents are secure:</strong> All uploaded documents are encrypted and stored securely. 
+                    We use industry-standard security measures to protect your personal information.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/documents.js"></script>
+</body>
+</html>
