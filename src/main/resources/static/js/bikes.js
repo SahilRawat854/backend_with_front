@@ -64,7 +64,7 @@ class BikesManager {
                 pricePerMonth: 60000,
                 description: 'High-performance sports bike perfect for city rides',
                 status: 'AVAILABLE',
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/honda-cbr-600rr.jpg'
             },
             {
                 id: 2,
@@ -78,7 +78,7 @@ class BikesManager {
                 pricePerMonth: 72000,
                 description: 'Racing-inspired sport bike with advanced technology',
                 status: 'AVAILABLE',
-                imageUrl: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/yamaha-r1.jpg'
             },
             {
                 id: 3,
@@ -92,7 +92,7 @@ class BikesManager {
                 pricePerMonth: 66000,
                 description: 'Legendary Ninja series for adrenaline seekers',
                 status: 'AVAILABLE',
-                imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/kawasaki-ninja.jpg'
             },
             {
                 id: 4,
@@ -106,7 +106,7 @@ class BikesManager {
                 pricePerMonth: 48000,
                 description: 'Classic cruiser for comfortable long rides',
                 status: 'AVAILABLE',
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_1.jpg'
             },
             {
                 id: 5,
@@ -120,7 +120,7 @@ class BikesManager {
                 basePriceMonthly: 3500,
                 description: 'Track-ready sport bike with advanced technology',
                 status: { displayName: 'Available' },
-                imageUrl: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_2.jpg'
             },
             {
                 id: 6,
@@ -134,7 +134,7 @@ class BikesManager {
                 basePriceMonthly: 3200,
                 description: 'Premium touring bike for long-distance comfort',
                 status: { displayName: 'Available' },
-                imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_3.jpg'
             },
             {
                 id: 7,
@@ -148,7 +148,7 @@ class BikesManager {
                 basePriceMonthly: 398400,
                 description: 'Italian masterpiece with exceptional performance',
                 status: { displayName: 'Available' },
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_1.jpg'
             },
             {
                 id: 8,
@@ -162,7 +162,7 @@ class BikesManager {
                 basePriceMonthly: 178800,
                 description: 'German engineering meets urban mobility',
                 status: { displayName: 'Available' },
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_1.jpg'
             },
             {
                 id: 9,
@@ -176,7 +176,7 @@ class BikesManager {
                 basePriceMonthly: 199200,
                 description: 'Ready to Race - Austrian precision and power',
                 status: { displayName: 'Available' },
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_1.jpg'
             },
             {
                 id: 10,
@@ -190,7 +190,7 @@ class BikesManager {
                 basePriceMonthly: 99600,
                 description: 'Timeless classic with modern reliability',
                 status: { displayName: 'Available' },
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_1.jpg'
             },
             {
                 id: 11,
@@ -204,7 +204,7 @@ class BikesManager {
                 basePriceMonthly: 298800,
                 description: 'Classic cruiser with iconic Harley-Davidson styling',
                 status: { displayName: 'Available' },
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_1.jpg'
             },
             {
                 id: 12,
@@ -218,7 +218,7 @@ class BikesManager {
                 basePriceMonthly: 348000,
                 description: 'Italian racing heritage meets modern technology',
                 status: { displayName: 'Available' },
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/Bike_1.jpg'
             }
         ];
     }
@@ -251,7 +251,7 @@ class BikesManager {
 
         col.innerHTML = `
             <div class="card bike-card h-100" data-bike-id="${bike.id}">
-                <img src="${bike.imageUrl || 'https://via.placeholder.com/400x250/007bff/ffffff?text=' + bike.brand + '+' + bike.model}" 
+                <img src="${bike.imageUrl || 'images/Bike_1.jpg'}" 
                      class="card-img-top" alt="${bike.brand} ${bike.model}" style="height: 250px; object-fit: cover;">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -394,7 +394,7 @@ class BikesManager {
         const cartItem = {
             id: bike.id,
             name: `${bike.year} ${bike.brand} ${bike.model}`,
-            image: bike.imageUrl || 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=300&fit=crop&crop=center',
+            image: bike.imageUrl || 'images/Bike_1.jpg',
             price: bike.pricePerHour,
             duration: 4, // Default 4 hours
             quantity: 1,

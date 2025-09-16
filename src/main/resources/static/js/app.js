@@ -89,7 +89,7 @@ class SpinGoApp {
                 pricePerMonth: 60000,
                 description: 'High-performance sports bike perfect for city rides',
                 status: 'AVAILABLE',
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/honda-cbr-600rr.jpg'
             },
             {
                 id: 2,
@@ -101,7 +101,7 @@ class SpinGoApp {
                 pricePerMonth: 72000,
                 description: 'Racing-inspired sport bike with advanced technology',
                 status: 'AVAILABLE',
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/yamaha-r1.jpg'
             },
             {
                 id: 3,
@@ -113,7 +113,7 @@ class SpinGoApp {
                 pricePerMonth: 66000,
                 description: 'Legendary Ninja series for adrenaline seekers',
                 status: 'AVAILABLE',
-                imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'
+                imageUrl: 'images/kawasaki-ninja.jpg'
             }
         ];
 
@@ -127,7 +127,7 @@ class SpinGoApp {
         col.innerHTML = `
             <div class="card bike-card h-100">
                 <div class="position-relative">
-                    <img src="${bike.imageUrl || 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=500&h=300&fit=crop&crop=center'}" 
+                    <img src="${bike.imageUrl || 'images/Bike_1.jpg'}" 
                          class="card-img-top" alt="${bike.brand} ${bike.model}" style="height: 200px; object-fit: cover;">
                     <div class="position-absolute top-0 end-0 m-2">
                         <span class="badge bg-success status-badge">${bike.status === 'AVAILABLE' ? 'Available' : bike.status}</span>
