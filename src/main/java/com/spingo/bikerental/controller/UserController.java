@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -42,14 +43,20 @@ public class UserController {
 
     // Create new user
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
+        try {
+            if (userRepository.existsByEmail(user.getEmail())) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Email is already taken: " + user.getEmail()));
+            }
+            
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User savedUser = userRepository.save(user);
+            return ResponseEntity.ok(savedUser);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", "Failed to create user: " + e.getMessage()));
         }
-        
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(savedUser);
     }
 
     // Update user

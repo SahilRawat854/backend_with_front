@@ -5,12 +5,14 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bikes")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Bike {
     
     @Id
@@ -52,7 +54,7 @@ public class Bike {
     @Column(name = "price_per_month", precision = 10, scale = 2)
     private BigDecimal pricePerMonth;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
     private User owner;
     

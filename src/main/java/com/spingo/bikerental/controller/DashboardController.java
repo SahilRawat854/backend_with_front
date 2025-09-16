@@ -36,25 +36,36 @@ public class DashboardController {
     // Customer Dashboard
     @GetMapping("/customer")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<Map<String, Object>> getCustomerDashboard(@RequestParam Long userId) {
-        Map<String, Object> dashboard = new HashMap<>();
-        
-        // Get user's bookings
-        List<Booking> userBookings = bookingRepository.findByUserId(userId);
-        dashboard.put("totalBookings", userBookings.size());
-        dashboard.put("activeBookings", (long) userBookings.stream()
-            .filter(b -> b.getStatus() == BookingStatus.CONFIRMED || b.getStatus() == BookingStatus.ACTIVE)
-            .count());
-        dashboard.put("recentBookings", userBookings.stream().limit(5).toList());
-        
-        // Calculate total spent
-        BigDecimal totalSpent = userBookings.stream()
-            .filter(b -> b.getStatus() == BookingStatus.COMPLETED)
-            .map(Booking::getTotalPrice)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-        dashboard.put("totalSpent", totalSpent);
-        
-        return ResponseEntity.ok(dashboard);
+    public ResponseEntity<?> getCustomerDashboard(@RequestParam Long userId) {
+        try {
+            Map<String, Object> dashboard = new HashMap<>();
+            
+            // Validate user exists
+            if (!userRepository.existsById(userId)) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "User not found with ID: " + userId));
+            }
+            
+            // Get user's bookings
+            List<Booking> userBookings = bookingRepository.findByUserId(userId);
+            dashboard.put("totalBookings", userBookings.size());
+            dashboard.put("activeBookings", (long) userBookings.stream()
+                .filter(b -> b.getStatus() == BookingStatus.CONFIRMED || b.getStatus() == BookingStatus.ACTIVE)
+                .count());
+            dashboard.put("recentBookings", userBookings.stream().limit(5).toList());
+            
+            // Calculate total spent
+            BigDecimal totalSpent = userBookings.stream()
+                .filter(b -> b.getStatus() == BookingStatus.COMPLETED)
+                .map(Booking::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+            dashboard.put("totalSpent", totalSpent);
+            
+            return ResponseEntity.ok(dashboard);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", "Failed to get customer dashboard: " + e.getMessage()));
+        }
     }
 
     // Admin Dashboard

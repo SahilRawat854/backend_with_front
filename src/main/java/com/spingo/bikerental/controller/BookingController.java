@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -54,48 +55,67 @@ public class BookingController {
     // Create new booking
     @PostMapping
     @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN', 'INDIVIDUAL_OWNER', 'RENTAL_BUSINESS', 'DELIVERY_PARTNER')")
-    public ResponseEntity<Booking> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
-        // Validate user exists
-        Optional<User> userOptional = userRepository.findById(bookingRequest.getUserId());
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
+        try {
+            // Validate user exists
+            Optional<User> userOptional = userRepository.findById(bookingRequest.getUserId());
+            if (userOptional.isEmpty()) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "User not found with ID: " + bookingRequest.getUserId()));
+            }
+
+            // Validate bike exists and is available
+            Optional<Bike> bikeOptional = bikeRepository.findById(bookingRequest.getBikeId());
+            if (bikeOptional.isEmpty()) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Bike not found with ID: " + bookingRequest.getBikeId()));
+            }
+
+            Bike bike = bikeOptional.get();
+            if (bike.getStatus() != BikeStatus.AVAILABLE) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Bike is not available. Current status: " + bike.getStatus()));
+            }
+
+            // Validate dates
+            if (bookingRequest.getPickupDate() == null || bookingRequest.getDropoffDate() == null) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Pickup and dropoff dates are required"));
+            }
+
+            if (bookingRequest.getPickupDate().isAfter(bookingRequest.getDropoffDate())) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Pickup date cannot be after dropoff date"));
+            }
+
+            // Calculate total price based on time difference
+            BigDecimal totalPrice = calculateTotalPrice(
+                bookingRequest.getPickupDate(),
+                bookingRequest.getDropoffDate(),
+                bike.getPricePerHour()
+            );
+
+            // Create booking
+            Booking booking = new Booking();
+            booking.setUser(userOptional.get());
+            booking.setBike(bike);
+            booking.setPickupDate(bookingRequest.getPickupDate());
+            booking.setDropoffDate(bookingRequest.getDropoffDate());
+            booking.setPickupTime(bookingRequest.getPickupTime());
+            booking.setDropTime(bookingRequest.getDropTime());
+            booking.setTotalPrice(totalPrice);
+            booking.setStatus(BookingStatus.PENDING);
+
+            // Update bike status to BOOKED
+            bike.setStatus(BikeStatus.BOOKED);
+            bikeRepository.save(bike);
+
+            Booking savedBooking = bookingRepository.save(booking);
+            return ResponseEntity.ok(savedBooking);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                .body(Map.of("error", "Failed to create booking: " + e.getMessage()));
         }
-
-        // Validate bike exists and is available
-        Optional<Bike> bikeOptional = bikeRepository.findById(bookingRequest.getBikeId());
-        if (bikeOptional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        Bike bike = bikeOptional.get();
-        if (bike.getStatus() != BikeStatus.AVAILABLE) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        // Calculate total price based on time difference
-        BigDecimal totalPrice = calculateTotalPrice(
-            bookingRequest.getPickupDate(),
-            bookingRequest.getDropoffDate(),
-            bike.getPricePerHour()
-        );
-
-        // Create booking
-        Booking booking = new Booking();
-        booking.setUser(userOptional.get());
-        booking.setBike(bike);
-        booking.setPickupDate(bookingRequest.getPickupDate());
-        booking.setDropoffDate(bookingRequest.getDropoffDate());
-        booking.setPickupTime(bookingRequest.getPickupTime());
-        booking.setDropTime(bookingRequest.getDropTime());
-        booking.setTotalPrice(totalPrice);
-        booking.setStatus(BookingStatus.PENDING);
-
-        // Update bike status to BOOKED
-        bike.setStatus(BikeStatus.BOOKED);
-        bikeRepository.save(bike);
-
-        Booking savedBooking = bookingRepository.save(booking);
-        return ResponseEntity.ok(savedBooking);
     }
 
     // Update booking
