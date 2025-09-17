@@ -114,6 +114,30 @@ class SpinGoApp {
                 description: 'Legendary Ninja series for adrenaline seekers',
                 status: 'AVAILABLE',
                 imageUrl: 'images/kawasaki-ninja.jpg'
+            },
+            {
+                id: 4,
+                brand: 'Kawasaki',
+                model: 'Ninja',
+                year: 2023,
+                pricePerHour: 550,
+                pricePerDay: 3300,
+                pricePerMonth: 66000,
+                description: 'Legendary Ninja series for adrenaline seekers',
+                status: 'AVAILABLE',
+                imageUrl: 'images/gsx 750.avif'
+            },
+            {
+                id: 5,
+                brand: 'Kawasaki',
+                model: 'Ninja',
+                year: 2023,
+                pricePerHour: 550,
+                pricePerDay: 3300,
+                pricePerMonth: 66000,
+                description: 'Legendary Ninja series for adrenaline seekers',
+                status: 'AVAILABLE',
+                imageUrl: 'images/kawasaki-ninja.jpg'
             }
         ];
 
@@ -127,7 +151,7 @@ class SpinGoApp {
         col.innerHTML = `
             <div class="card bike-card h-100">
                 <div class="position-relative">
-                    <img src="${bike.imageUrl || 'images/Bike_1.jpg'}" 
+                    <img src="${bike.imageUrl || 'images/bike_1.jpg'}" 
                          class="card-img-top" alt="${bike.brand} ${bike.model}" style="height: 200px; object-fit: cover;">
                     <div class="position-absolute top-0 end-0 m-2">
                         <span class="badge bg-success status-badge">${bike.status === 'AVAILABLE' ? 'Available' : bike.status}</span>
@@ -135,7 +159,7 @@ class SpinGoApp {
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="card-title text-white">${bike.year} ${bike.brand} ${bike.model}</h5>
+                        <h5 class="card-title text-white"> ${bike.brand} ${bike.model}</h5>
                     </div>
                     <p class="card-text text-muted">${bike.description}</p>
                     <div class="row text-center">
@@ -274,6 +298,12 @@ class SpinGoApp {
 
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize auth manager first
+    if (window.authManager) {
+        window.authManager.updateNavigation();
+    }
+    
+    // Initialize app
     window.app = new SpinGoApp();
     
     // Add fade-in animation to main content

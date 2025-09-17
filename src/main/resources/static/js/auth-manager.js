@@ -11,7 +11,11 @@ class AuthManager {
     }
 
     loadUserFromStorage() {
-        const savedUser = localStorage.getItem('spinGoUser');
+        // Try spinGoUser first, then fallback to user
+        let savedUser = localStorage.getItem('spinGoUser');
+        if (!savedUser) {
+            savedUser = localStorage.getItem('user');
+        }
         if (savedUser) {
             this.currentUser = JSON.parse(savedUser);
         }
@@ -26,7 +30,12 @@ class AuthManager {
     logout() {
         this.currentUser = null;
         localStorage.removeItem('spinGoUser');
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
         localStorage.removeItem('spinGoCart'); // Clear cart on logout
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('spinGoUser');
         this.updateNavigation();
         window.location.href = 'index.html';
     }

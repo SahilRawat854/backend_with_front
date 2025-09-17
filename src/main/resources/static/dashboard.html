@@ -69,8 +69,8 @@
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <h2 class="mb-1 text-white">Welcome back, <span id="welcomeName">Customer</span>!</h2>
-                                    <p class="text-light mb-0">Here's your rental activity overview</p>
+                                    <h2 class="mb-1">Welcome back, <span id="welcomeName">Customer</span>!</h2>
+                                    <p class="mb-0">Here's your rental activity overview</p>
                                 </div>
                                 <div class="col-md-4 text-md-end">
                                     <button class="btn btn-primary btn-lg" onclick="window.location.href='bikes.html'">
@@ -95,8 +95,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h6 class="text-light mb-1">Total Rides</h6>
-                                    <h3 class="mb-0 text-white" id="totalRides">12</h3>
+                                    <h6 class="mb-1">Total Rides</h6>
+                                    <h3 class="mb-0" id="totalRides">12</h3>
                                 </div>
                             </div>
                         </div>
@@ -112,8 +112,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h6 class="text-light mb-1">Hours Ridden</h6>
-                                    <h3 class="mb-0 text-white" id="hoursRidden">48</h3>
+                                    <h6 class="mb-1">Hours Ridden</h6>
+                                    <h3 class="mb-0" id="hoursRidden">48</h3>
                                 </div>
                             </div>
                         </div>
@@ -129,8 +129,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h6 class="text-light mb-1">Total Spent</h6>
-                                    <h3 class="mb-0 text-white" id="totalSpent">₹1,04,000</h3>
+                                    <h6 class="mb-1">Total Spent</h6>
+                                    <h3 class="mb-0" id="totalSpent">₹1,04,000</h3>
                                 </div>
                             </div>
                         </div>
@@ -146,8 +146,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h6 class="text-light mb-1">Loyalty Points</h6>
-                                    <h3 class="mb-0 text-white" id="loyaltyPoints">2,450</h3>
+                                    <h6 class="mb-1">Loyalty Points</h6>
+                                    <h3 class="mb-0" id="loyaltyPoints">2,450</h3>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0 text-white"><i class="fas fa-bolt"></i> Quick Actions</h5>
+                            <h5 class="mb-0"><i class="fas fa-bolt"></i> Quick Actions</h5>
                         </div>
                         <div class="card-body">
                             <div class="row g-3">
@@ -200,7 +200,7 @@
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0 text-white"><i class="fas fa-chart-line"></i> Usage Overview</h5>
+                            <h5 class="mb-0"><i class="fas fa-chart-line"></i> Usage Overview</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="usageChart" height="100"></canvas>
@@ -212,7 +212,7 @@
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0 text-white"><i class="fas fa-calendar-alt"></i> Recent Bookings</h5>
+                            <h5 class="mb-0"><i class="fas fa-calendar-alt"></i> Recent Bookings</h5>
                         </div>
                         <div class="card-body">
                             <div class="list-group list-group-flush" id="recentBookings">
@@ -228,14 +228,14 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0 text-white"><i class="fas fa-bicycle"></i> Current Booking</h5>
+                            <h5 class="mb-0"><i class="fas fa-bicycle"></i> Current Booking</h5>
                         </div>
                         <div class="card-body">
                             <div id="currentBooking">
                                 <div class="text-center py-5">
-                                    <i class="fas fa-motorcycle fa-3x text-light mb-3"></i>
-                                    <h5 class="text-light">No active booking</h5>
-                                    <p class="text-light">Start a new ride to see your current booking here</p>
+                                    <i class="fas fa-motorcycle fa-3x mb-3"></i>
+                                    <h5>No active booking</h5>
+                                    <p>Start a new ride to see your current booking here</p>
                                     <button class="btn btn-primary" onclick="window.location.href='bikes.html'">
                                         <i class="fas fa-search"></i> Find a Bike
                                     </button>
@@ -265,6 +265,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth-manager.js"></script>
     <script src="js/app.js"></script>
     <script src="js/dashboard.js"></script>
 </body>

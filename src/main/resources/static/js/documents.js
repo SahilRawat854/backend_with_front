@@ -458,5 +458,11 @@ class DocumentsManager {
 
 // Initialize documents manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize auth manager first
+    if (window.authManager) {
+        window.authManager.updateNavigation();
+    }
+    
+    // Initialize documents manager
     window.documentsManager = new DocumentsManager();
 });

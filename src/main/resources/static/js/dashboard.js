@@ -13,17 +13,27 @@ class DashboardManager {
     }
 
     loadUserData() {
-        // Get user from auth manager
+        // Try to get user from auth manager first
         if (window.authManager) {
             this.user = window.authManager.getCurrentUser();
+        }
+        
+        // Fallback: get user from localStorage directly
+        if (!this.user) {
+            const savedUser = localStorage.getItem('spinGoUser') || localStorage.getItem('user');
+            if (savedUser) {
+                this.user = JSON.parse(savedUser);
+            }
         }
 
         // Update UI with user data
         if (this.user) {
             document.getElementById('userName').textContent = this.user.name || 'Customer';
             document.getElementById('welcomeName').textContent = this.user.name || 'Customer';
+            console.log('User loaded:', this.user);
         } else {
             // Redirect to login if not authenticated
+            console.log('No user found, redirecting to login');
             window.location.href = 'login.html';
         }
     }
@@ -36,6 +46,14 @@ class DashboardManager {
         const ctx = document.getElementById('usageChart');
         if (!ctx) return;
 
+        // Get theme-aware colors from CSS variables
+        const getComputedStyle = window.getComputedStyle(document.documentElement);
+        const primaryColor = getComputedStyle.getPropertyValue('--bs-primary').trim() || '#007bff';
+        const successColor = getComputedStyle.getPropertyValue('--bs-success').trim() || '#28a745';
+        const textColor = getComputedStyle.getPropertyValue('--bs-body-color').trim() || '#ffffff';
+        const mutedColor = getComputedStyle.getPropertyValue('--bs-secondary').trim() || '#6c757d';
+        const borderColor = getComputedStyle.getPropertyValue('--bs-border-color').trim() || '#dee2e6';
+
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -43,15 +61,15 @@ class DashboardManager {
                 datasets: [{
                     label: 'Hours Ridden',
                     data: [12, 19, 8, 15, 22, 18],
-                    borderColor: '#6366f1',
-                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    borderColor: primaryColor,
+                    backgroundColor: primaryColor + '20', // Add transparency
                     tension: 0.4,
                     fill: true
                 }, {
                     label: 'Distance (km)',
                     data: [45, 78, 32, 65, 89, 72],
-                    borderColor: '#10b981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderColor: successColor,
+                    backgroundColor: successColor + '20', // Add transparency
                     tension: 0.4,
                     fill: true
                 }]
@@ -62,25 +80,25 @@ class DashboardManager {
                 plugins: {
                     legend: {
                         labels: {
-                            color: '#f1f5f9'
+                            color: textColor
                         }
                     }
                 },
                 scales: {
                     x: {
                         ticks: {
-                            color: '#94a3b8'
+                            color: mutedColor
                         },
                         grid: {
-                            color: '#475569'
+                            color: borderColor
                         }
                     },
                     y: {
                         ticks: {
-                            color: '#94a3b8'
+                            color: mutedColor
                         },
                         grid: {
-                            color: '#475569'
+                            color: borderColor
                         }
                     }
                 }
@@ -161,12 +179,25 @@ class DashboardManager {
 
 // Global logout function
 function logout() {
+    // Clear all authentication data
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('spinGoUser');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('spinGoUser');
+    
+    // Use auth manager if available
     if (window.authManager) {
         window.authManager.logout();
+    } else {
+        // Fallback redirect
+        window.location.href = 'login.html';
     }
 }
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Dashboard: DOM loaded, initializing dashboard manager');
     window.dashboardManager = new DashboardManager();
 });

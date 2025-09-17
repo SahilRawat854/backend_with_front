@@ -70,7 +70,7 @@ class BikesManager {
                 id: 2,
                 brand: 'Yamaha',
                 model: 'R1',
-                year: 2023,
+                year: 2025,
                 type: 'SPORT',
                 city: 'Delhi',
                 pricePerHour: 600,
@@ -84,7 +84,7 @@ class BikesManager {
                 id: 3,
                 brand: 'Kawasaki',
                 model: 'Ninja',
-                year: 2023,
+                year: 2024,
                 type: 'SPORT',
                 city: 'Mumbai',
                 pricePerHour: 550,
@@ -98,7 +98,7 @@ class BikesManager {
                 id: 4,
                 brand: 'Honda',
                 model: 'Shadow',
-                year: 2023,
+                year: 2021,
                 type: 'CRUISER',
                 city: 'Chennai',
                 pricePerHour: 400,
@@ -106,35 +106,35 @@ class BikesManager {
                 pricePerMonth: 48000,
                 description: 'Classic cruiser for comfortable long rides',
                 status: 'AVAILABLE',
-                imageUrl: 'images/Bike_1.jpg'
+                imageUrl: 'images/honda-shadow.jpg'
             },
             {
                 id: 5,
-                make: 'Suzuki',
+                brand: 'Suzuki',
                 model: 'GSX-R750',
                 year: 2023,
                 type: 'SPORT',
                 city: 'Mumbai',
-                basePriceHourly: 30,
-                basePriceDaily: 180,
-                basePriceMonthly: 3500,
+                pricePerHour: 30,
+                pricePerDay: 180,
+                pricePerMonth: 3500,
                 description: 'Track-ready sport bike with advanced technology',
-                status: { displayName: 'Available' },
-                imageUrl: 'images/Bike_2.jpg'
+                status: 'Available',
+                imageUrl: 'images/gsx-750.avif'
             },
             {
                 id: 6,
-                make: 'Yamaha',
+                brand: 'Yamaha',
                 model: 'FJR1300',
                 year: 2023,
                 type: 'TOURING',
                 city: 'Kolkata',
-                basePriceHourly: 28,
-                basePriceDaily: 160,
-                basePriceMonthly: 3200,
+                pricePerHour: 30,
+                pricePerDay: 180,
+                pricePerMonth: 3500,
                 description: 'Premium touring bike for long-distance comfort',
-                status: { displayName: 'Available' },
-                imageUrl: 'images/Bike_3.jpg'
+                status:'Available',
+                imageUrl: 'images/fjr-1300.jpg'
             },
             {
                 id: 7,
@@ -255,7 +255,7 @@ class BikesManager {
                      class="card-img-top" alt="${bike.brand} ${bike.model}" style="height: 250px; object-fit: cover;">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h5 class="card-title">${bike.year} ${bike.brand} ${bike.model}</h5>
+                        <h5 class="card-title">${bike.brand} ${bike.model}</h5>
                         <span class="badge ${statusClass} status-badge">${bike.status === 'AVAILABLE' ? 'Available' : bike.status}</span>
                     </div>
                     <p class="text-muted small mb-2">
